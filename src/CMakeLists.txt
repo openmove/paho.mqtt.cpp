@@ -52,6 +52,7 @@ set(COMMON_SRC
   will_options.cpp
 )
 
+set(PAHO_MQTT_C_LIB "/usr/local/lib/libpaho-mqtt3as.a")
 ## --- Build the shared library, if requested ---
 
 if(PAHO_BUILD_SHARED)
@@ -81,10 +82,12 @@ if(PAHO_BUILD_STATIC)
     list(APPEND PAHO_CPP_TARGETS paho-mqttpp3-static)
 
     ## add dependencies to the shared library
-    target_link_libraries(paho-mqttpp3-static PUBLIC 
+    target_link_libraries(paho-mqttpp3-static PRIVATE 
       ${PAHO_MQTT_C_LIB}
       Threads::Threads
     )
+
+    target_include_directories(paho-mqttpp3-static SYSTEM PRIVATE /usr/local/include/)
 
     ## Let the archive use the same base name as the shared lib on *nix systems
     if(UNIX)
